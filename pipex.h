@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:55:47 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/08 15:29:27 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:07:27 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-char	**ft_split(char const *s, char c);
+char	**ft_split(char *s, char c);
 char 	*find_path(char *cmd, char **envp);
-
-int	white_space(char c);
+char	*ft_strdup(char *s);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif

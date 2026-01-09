@@ -6,20 +6,23 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:00:40 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/08 15:57:40 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:06:07 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	white_space(char c)
+static int ft_strlen(char *str)
 {
-	if ((c >= 9 && c <= 13) || c == ' ')
-		return (1);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
 	size_t	i;
 
@@ -35,7 +38,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(char *s)
 {
 	char	*duplicata;
 	int		i;
@@ -56,39 +59,29 @@ char	*ft_strdup(const char *s)
 	return (duplicata);
 }
 
-static char **get_env_path(char *env_path)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int i;
-	char **paths;
+	int		s1len;
+	int		s2len;
+	int		i;
+	int		j;
+	char	*tab;
 
-	i = 0;
-	while (env_path[i] != '/')
-		i++;
-	paths = ft_split(env_path + i, ':');
-	if (!paths)
+	if (!s1 || !s2)
 		return (NULL);
-	return (paths);
-}
-char *find_path(char *cmd, char **envp)
-{
-	char **paths;
-	char *cmd_dup;
-	int i;
-	
-	if (!cmd)
-		return (NULL);
-	if (ft_strchr(cmd, "/"))
-	{
-		if (access(cmd, X_OK) == 0)
-		{
-			cmd_dup = ft_strdup(cmd);
-			return (cmd);
-		}
-		else
-			return (NULL);
-	}
-	paths = get_env_path(envp[2]);
+	s1len = ft_strlen(s1);
+	s2len = ft_strlen(s2);
+	tab = NULL;
+	tab = malloc(sizeof(char) * (s1len + s2len) + 1);
+	if (!tab)
+		return (0);
 	i = 0;
-
-		
+	j = 0;
+	while (s1[i])
+		tab[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		tab[j++] = s2[i++];
+	tab[j] = 0;
+	return (tab);
 }

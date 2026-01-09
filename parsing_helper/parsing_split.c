@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:00:16 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/08 12:43:04 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:07:53 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	fill_tab(char const *s, char c, char **tab)
 	return (1);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	char	**tab;
 	int		word_number;
