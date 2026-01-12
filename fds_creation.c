@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   fds_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/12 16:47:47 by mrojouan         ###   ########.fr       */
+/*   Created: 2026/01/12 16:41:45 by mrojouan          #+#    #+#             */
+/*   Updated: 2026/01/12 16:46:29 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
-#include <stdio.h>
-int main(int ac, char **av, char **envp)
-{
-	int fd_in;
-	char **cmd1;
-	char *path;
 
-	(void)ac;
-	cmd1 = ft_split(av[2], ' ');
-	fd_in = create_fd_in(av[1]);
-	path = find_path(cmd1[0], envp);
-	dup2(fd_in, 0);
-	close(fd_in);
-	execve(path, cmd1, envp);
+int create_fd_in(char *infile)
+{
+	int fd;
+
+	fd = open(infile, O_RDONLY);
+	if (fd < 0)
+	{
+		perror(infile);
+		exit(1);
+	}
+	return (fd);
 }
