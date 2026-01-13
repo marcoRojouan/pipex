@@ -6,12 +6,34 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:49:26 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/09 16:20:20 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:48:16 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 #include <stdio.h>
+
+int find_path_index(char **envp, char *value)
+{
+	int i;
+	int j;
+
+	i = 0;
+
+	while (envp[i])
+	{
+		j = 0;
+		while (value[j] == envp[i][j] && (value[j] || envp[i][j]))
+		{
+			if (value[j] == '\0')
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (-1);
+}
+
 static char *join_path(char *dir, char *cmd)
 {
 	char *tmp;
@@ -33,7 +55,7 @@ static char **get_env_path(char *env_path)
 	char **paths;
 
 	i = 0;
-	while (env_path[i] != '/')
+	while (env_path[i] != '=')
 		i++;
 	paths = ft_split(env_path + i, ':');
 	if (!paths)
@@ -45,6 +67,7 @@ char *find_path(char *cmd, char **envp)
 {
 	char **paths;
 	char *path;
+	int path_index;
 	int i;
 	
 	if (!cmd)
@@ -55,7 +78,10 @@ char *find_path(char *cmd, char **envp)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	paths = get_env_path(envp[38]);
+	path_index = find_path_index(envp, "PATH=");
+	if (path_index == -1)
+		return (NULL);
+	paths = get_env_path(envp[path_index]);
 	i = 0;
 	while (paths[i])
 	{
