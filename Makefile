@@ -5,6 +5,7 @@ CFLAGS		= -Wall -Wextra -Werror -g -I ./
 RM			= rm -f
 
 SRCS		= pipex.c \
+			  fds_creation.c \
 			  parsing_helper/parsing_path_finding.c \
 			  parsing_helper/parsing_split.c \
 			  parsing_helper/parsing_utils.c

@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:55:47 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/13 14:24:34 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/15 14:15:27 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ char	*ft_strjoin(char *s1, char *s2);
 
 int		create_fd_in(char *infile);
 int		create_fd_out(char *outfile);
+int ft_strlen(char *str);
 
 #endif

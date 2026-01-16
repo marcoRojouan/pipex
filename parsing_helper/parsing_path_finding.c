@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:49:26 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/13 15:48:16 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/15 14:18:15 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ int find_path_index(char **envp, char *value)
 	{
 		j = 0;
 		while (value[j] == envp[i][j] && (value[j] || envp[i][j]))
-		{
-			if (value[j] == '\0')
-				return (i);
 			j++;
-		}
+		if (value[j] == '\0')
+			return (i);
 		i++;
 	}
 	return (-1);

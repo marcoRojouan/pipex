@@ -6,13 +6,13 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:00:40 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/09 16:06:07 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/15 14:15:21 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-static int ft_strlen(char *str)
+int ft_strlen(char *str)
 {
 	int	i;
 
