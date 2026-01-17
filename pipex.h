@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:55:47 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/15 14:15:27 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/17 17:04:33 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@
 # include <fcntl.h>
 # include <stdio.h>
 
+typedef struct s_path
+{
+	char	**cmd1;
+	char	**cmd2;
+	char	*path;
+} 				t_path;
+
+typedef struct s_fds
+{
+	int	fd_in;
+	int	fd_out;
+	int	fd_pipe[2];
+} 				t_fds;
+
 char	**ft_split(char *s, char c);
 char 	*find_path(char *cmd, char **envp);
 char	*ft_strdup(char *s);
@@ -26,6 +40,6 @@ char	*ft_strjoin(char *s1, char *s2);
 
 int		create_fd_in(char *infile);
 int		create_fd_out(char *outfile);
-int ft_strlen(char *str);
+int		ft_strlen(char *str);
 
 #endif
