@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/17 17:08:51 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/18 16:53:08 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,30 @@ void focking_parsing(t_path *path, t_fds *fds, char **av)
 		return ;
 }
 
+/** 
+ * @param t_path path
+ * @param char** envp
+ * @param int i 
+ * 
+ * Finding the path for the shell commands 
+ */
+void	executions(t_path *path, char **envp, int i)
+{	
+	if (i == 0)
+	{
+		path->path = find_path(path->cmd1[0], envp);
+		execve(path->path, path->cmd1, envp);
+	}
+	else
+	{
+		path->path = find_path(path->cmd2[0], envp);
+		execve(path->path, path->cmd2, envp);
+	}
+	free_all(path->path);
+	perror("MAIS CA VA PAS LA TETE");
+	exit(127);
+}	
+
 void	processes(t_path *path, t_fds *fds, char **envp)
 {
 	int i = 0;
@@ -55,9 +79,7 @@ void	processes(t_path *path, t_fds *fds, char **envp)
     			dup2(fds->fd_out, 1);
 			}
 			close_all(&fds);
-			path->path = find_path(path->cmd1[0], envp);
-			execve(path->path, path->cmd1, envp);
-			exit(1);
+			executions(&path, envp, i);
 		}
 	}
 

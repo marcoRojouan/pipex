@@ -6,11 +6,24 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 15:00:40 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/15 14:15:21 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/18 15:51:22 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
+
+void	free_all(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
 
 int ft_strlen(char *str)
 {
