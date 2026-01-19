@@ -6,13 +6,11 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/18 16:53:08 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:54:48 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
 void close_all(t_fds *fds)
 {
@@ -94,26 +92,7 @@ int main(int ac, char **av, char **envp)
 	
 	focking_parsing(&path, &fds, av);
 	pipe(fds.fd_pipe);
-	pid1 = fork();
-	if (pid1 == 0)
-	{
-		dup2(fds.fd_in, 0);
-		dup2(fds.fd_pipe[1], 1);
-		close_all(&fds);
-		path.path = find_path(path.cmd1[0], envp);
-		execve(path.path, path.cmd1, envp);
-		exit(1);
-	}
-	pid2 = fork();
-	if (pid2 == 0)
-	{
-		dup2(fds.fd_pipe[0], 0);
-    	dup2(fds.fd_out, 1);
-    	close_all(&fds);
-    	path.path = find_path(path.cmd2[0], envp);
-    	execve(path.path, path.cmd2, envp);
-	}
-	close_all(&fds);
+	processes(&path, &fds, envp);
     waitpid(pid1, NULL, 0);
     waitpid(pid2, NULL, 0);
 	free(path.cmd1);
