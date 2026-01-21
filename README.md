@@ -1,4 +1,4 @@
-PARSING PIPEX
+*PARSING PIPEX*
 
 ./pipex infile "ls -l" "wc -l" outfile
 

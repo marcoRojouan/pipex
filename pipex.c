@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/19 15:54:48 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:00:46 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	executions(t_path *path, char **envp, int i)
 		path->path = find_path(path->cmd2[0], envp);
 		execve(path->path, path->cmd2, envp);
 	}
-	free_all(path->path);
+	free(path->path);
 	perror("MAIS CA VA PAS LA TETE");
 	exit(127);
 }	
@@ -64,7 +64,7 @@ void	processes(t_path *path, t_fds *fds, char **envp)
 	while (i < 2)
 	{
 		pid[i] = fork();
-		if (pid == 0)
+		if (pid[i] == 0)
 		{
 			if (i == 0)
 			{
@@ -76,25 +76,25 @@ void	processes(t_path *path, t_fds *fds, char **envp)
 				dup2(fds->fd_pipe[0], 0);
     			dup2(fds->fd_out, 1);
 			}
-			close_all(&fds);
-			executions(&path, envp, i);
-		}
+			close_all(fds);
+			executions(path, envp, i);
+		}	
+		i++;
 	}
-
+	waitpid(-1, NULL, 0);
 }
 
 int main(int ac, char **av, char **envp)
 {
 	t_fds fds;
 	t_path path;
-	int pid1, pid2;
-	(void)ac;
 	
+	if (ac != 5)
+		return (1);	
 	focking_parsing(&path, &fds, av);
 	pipe(fds.fd_pipe);
 	processes(&path, &fds, envp);
-    waitpid(pid1, NULL, 0);
-    waitpid(pid2, NULL, 0);
-	free(path.cmd1);
-	free(path.cmd2);
+	close_all(&fds);
+	free_all(path.cmd1);
+	free_all(path.cmd2);
 }
