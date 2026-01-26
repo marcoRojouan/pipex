@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/21 13:00:46 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:46:28 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,62 @@
 
 void close_all(t_fds *fds)
 {
-	close(fds->fd_pipe[0]);
-	close(fds->fd_pipe[1]);
-	close(fds->fd_in);
-	close(fds->fd_out);
+	if (fds->fd_pipe[0] != -1)
+        close(fds->fd_pipe[0]);
+    if (fds->fd_pipe[1] != -1)
+        close(fds->fd_pipe[1]);
+    if (fds->fd_in != -1)
+        close(fds->fd_in);
+    if (fds->fd_out != -1)
+        close(fds->fd_out);
 }
 
 void focking_parsing(t_path *path, t_fds *fds, char **av)
 {
 	fds->fd_in = create_fd_in(av[1]);
+	if (fds->fd_in == -1)
+		exit(1);
 	fds->fd_out = create_fd_out(av[4]);
+	if (fds->fd_out == -1)
+	{
+		close(fds->fd_in);
+		exit(1);
+	}
 	path->cmd1 = ft_split(av[2], ' ');
 	if (!path->cmd1)
-		return ;
+		exit(1);
 	path->cmd2 = ft_split(av[3], ' ');
 	if (!path->cmd2)
-		return ;
+	{
+		free_all(path->cmd1);
+		exit(1);
+	}
 }
 
-/** 
- * @param t_path path
- * @param char** envp
- * @param int i 
- * 
- * Finding the path for the shell commands 
- */
 void	executions(t_path *path, char **envp, int i)
 {	
 	if (i == 0)
 	{
 		path->path = find_path(path->cmd1[0], envp);
+		if (!path->path)
+        {
+            write(2, "command not found\n", 18);
+            exit(127);
+        }
 		execve(path->path, path->cmd1, envp);
 	}
 	else
 	{
 		path->path = find_path(path->cmd2[0], envp);
+		if (!path->path)
+        {
+            write(2, "command not found\n", 18);
+            exit(127);
+        }
 		execve(path->path, path->cmd2, envp);
 	}
 	free(path->path);
-	perror("MAIS CA VA PAS LA TETE");
+	perror("execve");
 	exit(127);
 }	
 
@@ -64,6 +81,8 @@ void	processes(t_path *path, t_fds *fds, char **envp)
 	while (i < 2)
 	{
 		pid[i] = fork();
+		if (pid[i] == -1)
+    		exit(1);
 		if (pid[i] == 0)
 		{
 			if (i == 0)
@@ -81,7 +100,9 @@ void	processes(t_path *path, t_fds *fds, char **envp)
 		}	
 		i++;
 	}
-	waitpid(-1, NULL, 0);
+	close_all(fds);
+    waitpid(pid[0], NULL, 0);
+    waitpid(pid[1], NULL, 0);
 }
 
 int main(int ac, char **av, char **envp)
@@ -89,10 +110,15 @@ int main(int ac, char **av, char **envp)
 	t_fds fds;
 	t_path path;
 	
+	fds.fd_pipe[0] = -1;
+	fds.fd_pipe[1] = -1;
+	
 	if (ac != 5)
-		return (1);	
+		return (1);
 	focking_parsing(&path, &fds, av);
 	pipe(fds.fd_pipe);
+	if (pipe(fds.fd_pipe) == -1)
+		exit(1);
 	processes(&path, &fds, envp);
 	close_all(&fds);
 	free_all(path.cmd1);
