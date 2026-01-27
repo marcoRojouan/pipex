@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:53:58 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/26 14:46:28 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/27 14:49:28 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,34 @@ void focking_parsing(t_path *path, t_fds *fds, char **av)
 	}
 }
 
+void	cmd_error(char *cmd, t_path *path)
+{
+	int cmd_len;
+
+	cmd_len = ft_strlen(cmd);
+	write(2, cmd, cmd_len);
+	write(2, " : command not found\n", 22);
+	if (path->cmd1)
+		free_all(path->cmd1);
+	if (path->cmd2)
+		free_all(path->cmd2);
+    exit(127);
+}
+
 void	executions(t_path *path, char **envp, int i)
 {	
 	if (i == 0)
 	{
 		path->path = find_path(path->cmd1[0], envp);
 		if (!path->path)
-        {
-            write(2, "command not found\n", 18);
-            exit(127);
-        }
+			cmd_error(path->cmd1[0], path);
 		execve(path->path, path->cmd1, envp);
 	}
 	else
 	{
 		path->path = find_path(path->cmd2[0], envp);
 		if (!path->path)
-        {
-            write(2, "command not found\n", 18);
-            exit(127);
-        }
+        	cmd_error(path->cmd2[0], path);
 		execve(path->path, path->cmd2, envp);
 	}
 	free(path->path);
@@ -123,4 +131,5 @@ int main(int ac, char **av, char **envp)
 	close_all(&fds);
 	free_all(path.cmd1);
 	free_all(path.cmd2);
+	free(path.path);
 }
