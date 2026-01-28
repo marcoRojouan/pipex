@@ -6,7 +6,7 @@
 /*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 13:49:26 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/15 14:18:15 by mrojouan         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:07:54 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ static char **get_env_path(char *env_path)
 		i++;
 	paths = ft_split(env_path + i, ':');
 	if (!paths)
+	{
 		return (NULL);
+	}
 	return (paths);
 }
 
@@ -85,9 +87,13 @@ char *find_path(char *cmd, char **envp)
 	{
 		path = join_path(paths[i], cmd);
 		if (access(path, X_OK) == 0)
+		{
+			free_all(paths);
 			return (path);
+		}
 		free(path);
 		i++;
 	}
+	free_all(paths);
 	return (NULL);
 }
