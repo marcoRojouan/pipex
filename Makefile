@@ -5,10 +5,13 @@ CFLAGS		= -Wall -Wextra -Werror -g -I ./
 RM			= rm -f
 
 SRCS		= pipex.c \
-			  fds_creation.c \
+			  src/fds_creation.c \
+			  src/processes.c \
+			  src/errors.c \
 			  parsing_helper/parsing_path_finding.c \
 			  parsing_helper/parsing_split.c \
-			  parsing_helper/parsing_utils.c
+			  parsing_helper/parsing_utils.c \
+			  parsing_helper/parsing.c
 			  
 
 OBJS		= $(SRCS:.c=.o)
