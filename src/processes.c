@@ -3,15 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loup <loup@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 14:09:42 by loup              #+#    #+#             */
-/*   Updated: 2026/01/29 14:21:26 by loup             ###   ########.fr       */
+/*   Updated: 2026/01/30 14:14:27 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
+int	wait_processes(int pid[2])
+{
+	int	status[2];
+	int code[2];
+
+	waitpid(pid[0], &status[0], 0);
+	waitpid(pid[1], &status[1], 0);
+	code[0] = get_status(status[0]);
+	code[1] = get_status(status[1]);
+	if (code[0] == 127 || code[1] == 127)
+		return (127);
+	return (code[1]);
+}
 void close_all(t_fds *fds)
 {
 	if (fds->fd_pipe[0] != -1)
@@ -86,17 +99,4 @@ void	fork_process(t_path *path, t_fds *fds, char **envp, int pid[2])
 			child_process(path, fds, envp, i);
 		i++;
 	}
-}
-
-int	wait_processes(int pid[2])
-{
-	int	status[2];
-
-	waitpid(pid[0], &status[0], 0);
-	waitpid(pid[1], &status[1], 0);
-	if (WIFEXITED(status[1]))
-		return (WEXITSTATUS(status[1]));
-	if (WIFEXITED(status[0]))
-		return (WEXITSTATUS(status[0]));
-	return (1);
 }

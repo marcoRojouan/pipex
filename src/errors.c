@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loup <loup@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 14:19:18 by loup              #+#    #+#             */
-/*   Updated: 2026/01/29 14:20:14 by loup             ###   ########.fr       */
+/*   Updated: 2026/01/30 11:38:07 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,11 @@ void	cmd_error(char *cmd, t_path *path)
 	if (path->cmd2)
 		free_all(path->cmd2);
 	exit(127);
+}
+
+int		get_status(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (1);
 }

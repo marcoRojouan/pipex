@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loup <loup@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mrojouan <mrojouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:55:47 by mrojouan          #+#    #+#             */
-/*   Updated: 2026/01/29 14:21:23 by loup             ###   ########.fr       */
+/*   Updated: 2026/01/30 13:46:15 by mrojouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		create_fd_in(char *infile);
 int		create_fd_out(char *outfile);
 int		ft_strlen(char *str);
 int		wait_processes(int pid[2]);
+int		get_status(int status);
 
 void	free_all(char **tab);
 void	close_all(t_fds *fds);
